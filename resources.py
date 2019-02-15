@@ -30,7 +30,11 @@ def quitCheck():
 			pygame.quit()
 			return True
 
-
+def getMouseGridLoc():
+	mouse_loc = pygame.mouse.get_pos()
+	mouse_grid_x = int(mouse_loc[0]/BLOCKSIZE)
+	mouse_grid_y = int(mouse_loc[1]/BLOCKSIZE)
+	return (mouse_grid_y, mouse_grid_x)
 
 
 ####
