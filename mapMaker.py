@@ -5,6 +5,9 @@ from time import sleep
 		
 screen = pygame.display.set_mode((BLOCKSIZE*BOARD_X, BLOCKSIZE*BOARD_Y))
 
+screen.fill(white)
+pygame.display.flip()
+
 board = [[0 for i in range(BOARD_X)] for j in range(BOARD_Y)]
 
 def blitWalls():
@@ -18,18 +21,16 @@ def blitWalls():
 while 1:
 
     if pygame.mouse.get_pressed()[0] == True:
-        mouse_loc = pygame.mouse.get_pos()
-        mouse_grid_x = int(mouse_loc[0]/BLOCKSIZE)
-        mouse_grid_y = int(mouse_loc[1]/BLOCKSIZE)
-        sleep(.2)
-           
-        board[mouse_grid_y][mouse_grid_x] = abs(board[mouse_grid_y][mouse_grid_x] - 1)
+        y, x = getMouseGridLoc()
+        board[y][x] = abs(board[y][x] - 1)
     
-    screen.fill(white)
-    blitWalls()
-    pygame.display.flip()
+        screen.fill(white)
+        blitWalls()
+        pygame.display.flip()
 
-    sleep(.01)
+        while pygame.mouse.get_pressed()[0] == True and (y, x) == getMouseGridLoc():
+            if quitCheck():
+                break
 
     if quitCheck():
         break
