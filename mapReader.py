@@ -3,7 +3,7 @@ from resources import *
 import pygame
 		
 try:        
-	f = open(input("Which board? >>")+".csv", "r")
+	f = open("maps/"+input("Which board? >>")+".csv", "r")
 except FileNotFoundError:
 	print("no board by that name here")
 	exit()    

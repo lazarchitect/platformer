@@ -34,7 +34,7 @@ while 1:
     if quitCheck():
         break
 
-with open(input("Name The File:")+".csv", "w") as f:
+with open("maps/"+input("Name The File:")+".csv", "w") as f:
     for i in board:
         line = ""
         for j in i:
