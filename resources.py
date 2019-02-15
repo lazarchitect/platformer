@@ -23,9 +23,12 @@ PLAYER_MVMT = BLOCKSIZE/10
 
 def quitCheck():
 	if pygame.key.get_pressed()[pygame.K_q]:
-		exit()
+		pygame.quit()
+		return True
 	for event in pygame.event.get():
-		if event.type == pygame.locals.QUIT: exit()
+		if event.type == pygame.locals.QUIT: 
+			pygame.quit()
+			return True
 
 
 
