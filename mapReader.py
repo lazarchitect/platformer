@@ -1,6 +1,6 @@
 
-from resources import *
-import pygame
+#from resources import *
+#import pygame
 		
 try:        
 	f = open("maps/"+input("Which board? >>")+".csv", "r")
@@ -12,8 +12,8 @@ lines = f.readlines()
 f.close()
 
 
-screen = pygame.display.set_mode((BLOCKSIZE*BOARD_X, BLOCKSIZE*BOARD_Y))
-screen.fill(white)
+#screen = pygame.display.set_mode((BLOCKSIZE*BOARD_X, BLOCKSIZE*BOARD_Y))
+#screen.fill(white)
 
 for i in range(len(lines)):
 	vals = lines[i].split(",")
@@ -24,9 +24,9 @@ for i in range(len(lines)):
 			screen.blit(x, (j*BLOCKSIZE, i*BLOCKSIZE))
 
 
-pygame.display.flip()
+#pygame.display.flip()
 		
 
-while 1:
-	if quitCheck():
-		break
+#while 1:
+#	if quitCheck():
+#		break
