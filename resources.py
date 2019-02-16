@@ -14,7 +14,7 @@ white =(255, 255, 255)
 BLOCKSIZE = 20
 BOARD_X = 50
 BOARD_Y = 50
-PLAYER_MVMT = BLOCKSIZE/10
+PLAYER_MVMT = int(BLOCKSIZE/8)
 
 
 #############################################################
@@ -39,4 +39,5 @@ def getMouseGridLoc():
 
 ####
 if __name__ == "__main__":
-	print("Dont run the resources file ya dimbis")
+	import game
+	game.Game().run()
