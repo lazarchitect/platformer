@@ -48,7 +48,16 @@ class Player(Block):
 
 class Game:
 
-	def __init__(self):
+	def __init__(self, mapFile):
+
+		try:        
+			f = open(mapFile, "r")
+		except FileNotFoundError:
+			print("no board by that name here")
+			exit()    
+
+		lines = f.readlines()
+		f.close()
 		
 		self.background_color = white
 		
@@ -56,9 +65,11 @@ class Game:
 		
 		self.board = [[0 for i in range(BOARD_X)] for j in range(BOARD_Y)]
 
-		#create sample wall
-		self.testWall = Wall(4, 4) #position. these coords are the top left pixel probably
-		self.board[4][4] = 1 #y, x
+		for i in range(len(lines)):
+			vals = lines[i].split(",")
+			for j in range(len(vals)):
+				if int(vals[j]) == 1:
+					self.board[i][j] = 1
 
 		self.player = Player(2, 2)
 
@@ -101,7 +112,8 @@ class Game:
 			
 	def run(self):
 		while 1: #core game loop
-			quitCheck()
+			if quitCheck():
+				return
 
 			self.screen.fill(self.background_color)
 
@@ -110,9 +122,12 @@ class Game:
 			playerPos = (self.player.X, self.player.Y)
 			self.screen.blit(self.player.obj, playerPos)
 
-			w = self.testWall #just for shorthand/readability purposes
-			wallPos = (w.X*BLOCKSIZE, w.Y*BLOCKSIZE)
-			self.screen.blit(w.obj, wallPos)
+			for row in range(len(self.board)):
+				for col in range(len(self.board[row])):
+					if self.board[row][col] == 1:
+						w = pygame.Surface((BLOCKSIZE, BLOCKSIZE))
+						w.fill(brown)
+						self.screen.blit(w, (col*BLOCKSIZE, row*BLOCKSIZE))
 			
 			pygame.display.flip()
 			sleep(0.02)
@@ -122,6 +137,6 @@ class Game:
 #############################################################
 
 
-pygame.init()
+mapFile = "maps/"+input("Which board? >>")+".csv"
 
-Game().run()
+Game(mapFile).run()
