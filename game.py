@@ -71,7 +71,7 @@ class Game:
 				if int(vals[j]) == 1:
 					self.board[i][j] = 1
 
-		self.player = Player(2, 2)
+		self.player = Player(2*BLOCKSIZE, 2*BLOCKSIZE)
 
 	def playerMove(self):
 		sleep(0.01)
