@@ -36,11 +36,14 @@ class Wall(Block):
 	def __init__(self, x, y):
 		Block.__init__(self, x, y)
 		self.obj.fill(brown)
+		#walls dont *do* much
 
 class Player(Block):
 	def __init__(self, x, y):
 		Block.__init__(self, x, y)
 		self.obj.fill(red)
+
+		self.gravity = 0
 
 #############################################################
 ### MAIN CLASS ###
@@ -76,40 +79,49 @@ class Game:
 	def playerMove(self):
 		sleep(0.01)
 		p = self.player
-
-		loc = (p.Y, p.X)
+		bd = self.board
+		# loc = (p.Y, p.X)
 		#loc is upper left pixel
-		grid_loc = (int(p.Y/BLOCKSIZE), int(p.X/BLOCKSIZE))
-		print("loc:",loc)
-		print("grid_loc:",grid_loc)
+		# grid_loc = (int(p.Y/BLOCKSIZE), int(p.X/BLOCKSIZE))
+		# print("loc:",loc)
+		# print("grid_loc:",grid_loc)
 
 		if pygame.key.get_pressed()[pygame.K_LEFT]:
 			#if the pixel to the left of loc or the pixel to the left of loc and 20 down is == 1,
-			if self.board[int(p.Y/BLOCKSIZE)][int((p.X-1)/BLOCKSIZE)] == 1 or self.board[int((p.Y+19)/BLOCKSIZE)][int((p.X-1)/BLOCKSIZE)] == 1:
+			if blockLeft(bd, p):
 				pass
 			else:
 				p.X-=PLAYER_MVMT
 			
 		elif pygame.key.get_pressed()[pygame.K_RIGHT]:
 			#if the pixel to the right of loc+20x is 1 or the pixel to the right of loc+20x+20y is 1
-			if self.board[int(p.Y/BLOCKSIZE)][int((p.X+20)/BLOCKSIZE)] == 1 or self.board[int((p.Y+19)/BLOCKSIZE)][int((p.X+20)/BLOCKSIZE)] == 1:
+			if blockRight(bd, p):
 				pass
 			else:	
 				p.X+=PLAYER_MVMT
 		
 		if pygame.key.get_pressed()[pygame.K_UP]:
-			if self.board[int((p.Y-1)/BLOCKSIZE)][int(p.X/BLOCKSIZE)] == 1 or self.board[int((p.Y-1)/BLOCKSIZE)][int((p.X+19)/BLOCKSIZE)] == 1:
+			if blockAbove(bd, p):
 				pass
 			else:
 				p.Y-=PLAYER_MVMT
 		
 		elif pygame.key.get_pressed()[pygame.K_DOWN]:
-			if self.board[int((p.Y+21)/BLOCKSIZE)][int(p.X/BLOCKSIZE)] == 1 or self.board[int((p.Y+21)/BLOCKSIZE)][int((p.X+19)/BLOCKSIZE)] == 1:
+			if blockUnder(bd, p):
 				pass
 			else:
 				p.Y+=PLAYER_MVMT
 
-			
+	def gravity(self):
+		p = self.player
+		#if theres a block underneath...
+		if self.board[int((p.Y+21)/BLOCKSIZE)][int(p.X/BLOCKSIZE)] == 1 or self.board[int((p.Y+21)/BLOCKSIZE)][int((p.X+19)/BLOCKSIZE)] == 1:
+			p.gravity = 0
+		else:
+			p.gravity += 0.1
+
+		# p.Y += p.gravity	
+
 	def run(self):
 		while 1: #core game loop
 			if quitCheck():
@@ -118,6 +130,8 @@ class Game:
 			self.screen.fill(self.background_color)
 
 			self.playerMove()
+
+			self.gravity()
 
 			playerPos = (self.player.X, self.player.Y)
 			self.screen.blit(self.player.obj, playerPos)
