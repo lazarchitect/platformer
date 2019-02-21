@@ -14,7 +14,7 @@ white =(255, 255, 255)
 BLOCKSIZE = 20
 BOARD_X = 50
 BOARD_Y = 50
-PLAYER_MVMT = int(BLOCKSIZE/8)
+PLAYER_MVMT = 1
 
 
 #############################################################
