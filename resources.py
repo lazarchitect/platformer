@@ -11,6 +11,7 @@ teal = (  0, 128, 128)
 brown =(128, 110,  98)
 white =(255, 255, 255)
 
+GFORCE = 0.15
 BLOCKSIZE = 20
 BOARD_X = 50
 BOARD_Y = 50
