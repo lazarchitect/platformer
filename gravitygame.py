@@ -44,6 +44,7 @@ class Player(Block):
 		self.obj.fill(red)
 
 		self.gVeloc = 0 #gravitational downward speed
+		self.midair = True #if midair, jump shouldnt work
 
 #############################################################
 ### MAIN CLASS ###
@@ -78,7 +79,6 @@ class Game:
 
 	def playerMove(self):
 		sleep(0.01)
-		p = self.player
 		bd = self.board
 		# loc = (p.Y, p.X)
 		#loc is upper left pixel
@@ -88,49 +88,61 @@ class Game:
 
 		if pygame.key.get_pressed()[pygame.K_LEFT]:
 			#if the pixel to the left of loc or the pixel to the left of loc and 20 down is == 1,
-			if blockLeft(bd, p):
+			if blockLeft(bd, self.player):
 				pass
 			else:
-				p.X-=PLAYER_MVMT
+				self.player.X-=PLAYER_MVMT
 			
 		elif pygame.key.get_pressed()[pygame.K_RIGHT]:
 			#if the pixel to the right of loc+20x is 1 or the pixel to the right of loc+20x+20y is 1
-			if blockRight(bd, p):
+			if blockRight(bd, self.player):
 				pass
 			else:	
-				p.X+=PLAYER_MVMT
+				self.player.X+=PLAYER_MVMT
 		
+		#you can only jump when on the ground
 		if pygame.key.get_pressed()[pygame.K_UP]:
-			pass
-            #TODO: define jump movement
-		
-		elif pygame.key.get_pressed()[pygame.K_DOWN]:
-			# if blockUnder(bd, p):
-			# 	pass
-			# else:
-			# 	p.Y += PLAYER_MVMT	
-			pass
-            #TODO: should there even be anything here? ('fast fall')
-
+			if blockUnder(bd, self.player) and self.player.gVeloc >= 0:
+				self.player.gVeloc -= 5
+				self.player.Y += self.player.gVeloc
+				
+	"""
+	defines the gravity of the world of the game.
+	like in the real world, there is a gravitational acceleration constant.
+	its called GFORCE here.
+	each second that the player is in midair, their falling accelerates at that rate.
+	hitting the ground stops it.
+	no params, no returns. this function runs in the game loop.
+	"""
 	def gravity(self):
-		if blockUnder(self.board, self.player) == False:
-			self.player.gVeloc += GFORCE
-		else:
-			self.player.gVeloc = 0
-			self.player.Y = self.player.Y - (self.player.Y % 20)
-	
-		self.player.Y += self.player.gVeloc
+		bd = self.board
 
+		if blockUnder(bd, self.player) and self.player.gVeloc >= 0: 
+			self.player.Y = self.player.Y - (self.player.Y % BLOCKSIZE)
+			self.player.gVeloc = 0
+			
+		else:
+			self.player.gVeloc += GFORCE
+			self.player.gVeloc = round(self.player.gVeloc, 5)
+			self.player.Y += self.player.gVeloc
+
+		print(self.player.gVeloc)		
+
+
+	"""
+	function that sets the game in motion.
+	includes the loop that pygame requires to keep the screen up.
+	"""
 	def run(self):
 		while 1: #core game loop
 			if quitCheck():
 				return
 
 			self.screen.fill(self.background_color)
+			
+			self.gravity()
 
 			self.playerMove()
-
-			self.gravity()
 
 			playerPos = (self.player.X, self.player.Y)
 			self.screen.blit(self.player.obj, playerPos)
