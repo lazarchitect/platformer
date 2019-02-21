@@ -60,5 +60,4 @@ def blockLeft(bd, p):
 
 ####
 if __name__ == "__main__":
-	import game
-	game.Game().run()
+	print("this is the resources file")
