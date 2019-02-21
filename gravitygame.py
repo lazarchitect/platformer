@@ -117,7 +117,8 @@ class Game:
 			self.player.gVeloc += GFORCE
 		else:
 			self.player.gVeloc = 0
-
+			self.player.Y = self.player.Y - (self.player.Y % 20)
+	
 		self.player.Y += self.player.gVeloc
 
 	def run(self):
