@@ -13,12 +13,15 @@ except FileNotFoundError:
 lines = f.readlines()
 f.close()
 
-screen = pygame.display.set_mode((BLOCKSIZE*BOARD_X, BLOCKSIZE*BOARD_Y))
+boardHeight = len(lines)
+boardWidth = len(lines[0])
+
+screen = pygame.display.set_mode((BLOCKSIZE*boardWidth, BLOCKSIZE*boardHeight))
+		
+board = [[0 for i in range(boardWidth)] for j in range(boardHeight)]
 
 screen.fill(white)
 pygame.display.flip()
-
-board = [[0 for i in range(BOARD_X)] for j in range(BOARD_Y)]
 
 for i in range(len(lines)):
 	vals = lines[i].split(",")
@@ -61,4 +64,4 @@ with open("maps/"+mapFile+".csv", "w") as f:
 		line = ""
 		for j in i:
 			line+= str(j)+","
-		f.write(line[:-1]+"\n")  
+		f.write(line[:-1]+"\n")
