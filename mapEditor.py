@@ -14,13 +14,14 @@ lines = f.readlines()
 f.close()
 
 boardHeight = len(lines)
-boardWidth = len(lines[0])
+boardWidth = len(lines[0].split(","))
 
 screen = pygame.display.set_mode((BLOCKSIZE*boardWidth, BLOCKSIZE*boardHeight))
 		
 board = [[0 for i in range(boardWidth)] for j in range(boardHeight)]
 
 screen.fill(white)
+#TODO: add buttons for modifying screen dimensions
 pygame.display.flip()
 
 for i in range(len(lines)):
@@ -44,20 +45,30 @@ pygame.display.flip()
 
 while 1:
 	
+	"""
+	IF THE MOUSE IS PUSHED DOWN
+		GET THE CURRENT BLOCK'S STATUS
+		THEN, WHILE THE MOUSE IS _HELD_ DOWN,
+			TOGGLE ANY BLOCKS UNDER THE MOUSE THAT MATCH THE STATUS
+	"""
+
 	if pygame.mouse.get_pressed()[0] == True:
 		y, x = getMouseGridLoc()
-		board[y][x] = abs(board[y][x] - 1)
-	
-		screen.fill(white)
-		blitWalls()
-		pygame.display.flip()
-
-		while pygame.mouse.get_pressed()[0] == True and (y, x) == getMouseGridLoc():
-			if quitCheck():
-				break
+		status = board[y][x]
+		while pygame.mouse.get_pressed()[0] == True:
+			y, x = getMouseGridLoc()
+			
+			#a little unclear as to why, but these quitchecks are integral. without them, the program crashes.
+			#if python hits an infinite loop thats too bare, it gets ahead of itself.
+			if quitCheck(): break
+			
+			if board[y][x] == status:
+				board[y][x] = abs(board[y][x] - 1) #toggler
+				screen.fill(white)
+				blitWalls()
+				pygame.display.flip()
 	
 	if quitCheck(): break
-		
 
 with open("maps/"+mapFile+".csv", "w") as f:
 	for i in board:
