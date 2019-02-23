@@ -65,9 +65,12 @@ class Game:
 		
 		self.background_color = white
 		
-		self.screen = pygame.display.set_mode((BLOCKSIZE*BOARD_X, BLOCKSIZE*BOARD_Y))
+		boardHeight = len(lines)
+		boardWidth = len(lines[0].split(","))
+
+		self.screen = pygame.display.set_mode((BLOCKSIZE*boardWidth, BLOCKSIZE*boardHeight))
 		
-		self.board = [[0 for i in range(BOARD_X)] for j in range(BOARD_Y)]
+		self.board = [[0 for i in range(boardWidth)] for j in range(boardHeight)]
 
 		for i in range(len(lines)):
 			vals = lines[i].split(",")
@@ -78,33 +81,36 @@ class Game:
 		self.player = Player(2*BLOCKSIZE, 2*BLOCKSIZE)
 
 	def playerMove(self):
-		sleep(0.01)
 		bd = self.board
-		# loc = (p.Y, p.X)
-		#loc is upper left pixel
-		# grid_loc = (int(p.Y/BLOCKSIZE), int(p.X/BLOCKSIZE))
-		# print("loc:",loc)
-		# print("grid_loc:",grid_loc)
-
+		p = self.player
+		
 		if pygame.key.get_pressed()[pygame.K_LEFT]:
 			#if the pixel to the left of loc or the pixel to the left of loc and 20 down is == 1,
-			if blockLeft(bd, self.player):
+			if blockLeft(bd, p):
 				pass
 			else:
-				self.player.X-=PLAYER_MVMT
-			
+				for i in range(PLAYER_MVMT):
+					p.X -= 1
+					if isClippedLeft(bd, p):
+						p.X += 1
+						break	
+					
 		elif pygame.key.get_pressed()[pygame.K_RIGHT]:
 			#if the pixel to the right of loc+20x is 1 or the pixel to the right of loc+20x+20y is 1
-			if blockRight(bd, self.player):
+			if blockRight(bd, p):
 				pass
 			else:	
-				self.player.X+=PLAYER_MVMT
+				for i in range(PLAYER_MVMT):
+					p.X += 1
+					if isClippedRight(bd, p):
+						p.X -= 1
+						break
 		
 		#you can only jump when on the ground
 		if pygame.key.get_pressed()[pygame.K_UP]:
-			if blockUnder(bd, self.player) and self.player.gVeloc >= 0:
-				self.player.gVeloc -= 5
-				self.player.Y += self.player.gVeloc
+			if blockUnder(bd, p) and p.gVeloc == 0:
+				p.gVeloc -= 5
+				p.Y += p.gVeloc
 				
 	"""
 	defines the gravity of the world of the game.
@@ -116,18 +122,16 @@ class Game:
 	"""
 	def gravity(self):
 		bd = self.board
+		p = self.player
 
-		if blockUnder(bd, self.player) and self.player.gVeloc >= 0: 
-			self.player.Y = self.player.Y - (self.player.Y % BLOCKSIZE)
-			self.player.gVeloc = 0
+		if blockUnder(bd, p) and p.gVeloc >= 0:
+			p.Y = p.Y - (p.Y % BLOCKSIZE)
+			p.gVeloc = 0
 			
 		else:
-			self.player.gVeloc += GFORCE
-			self.player.gVeloc = round(self.player.gVeloc, 5)
-			self.player.Y += self.player.gVeloc
-
-		print(self.player.gVeloc)		
-
+			p.gVeloc += GFORCE
+			p.gVeloc = round(p.gVeloc, 5)
+			p.Y += p.gVeloc
 
 	"""
 	function that sets the game in motion.
@@ -155,7 +159,7 @@ class Game:
 						self.screen.blit(w, (col*BLOCKSIZE, row*BLOCKSIZE))
 			
 			pygame.display.flip()
-			sleep(0.02)
+			sleep(0.1 / GAMESPEED)
 
 #############################################################
 ### RUN BLOCK ###
