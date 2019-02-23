@@ -14,9 +14,8 @@ white =(255, 255, 255)
 GFORCE = 0.2
 JUMPFORCE = 3
 BLOCKSIZE = 20
-BOARD_X = 50
-BOARD_Y = 50
-PLAYER_MVMT = 1
+PLAYER_MVMT = 3
+GAMESPEED = 2
 
 
 #############################################################
@@ -38,12 +37,12 @@ def getMouseGridLoc():
 	mouse_grid_y = int(mouse_loc[1]/BLOCKSIZE)
 	return (mouse_grid_y, mouse_grid_x)
 
-#these next few functions are just used as aliases because of how ugly and unreadable they are
+#these next few functions are just used as aliases for blocks of code in the game file because of how ugly and unreadable they are
 
 #params: board, player
 #returns if the player is blocked by a Wall under it
 def blockUnder(bd, p):
-	return bd[int((p.Y+21)/BLOCKSIZE)][int(p.X/BLOCKSIZE)] == 1 or bd[int((p.Y+21)/BLOCKSIZE)][int((p.X+19)/BLOCKSIZE)] == 1
+	return bd[int((p.Y+20)/BLOCKSIZE)][int((p.X+1)/BLOCKSIZE)] == 1 or bd[int((p.Y+20)/BLOCKSIZE)][int((p.X+19)/BLOCKSIZE)] == 1
 
 #params: board, player
 #returns if the player is blocked by a Wall above it
@@ -59,6 +58,15 @@ def blockRight(bd, p):
 #returns if the player is blocked by a Wall to the left
 def blockLeft(bd, p):
 	return bd[int(p.Y/BLOCKSIZE)][int((p.X-1)/BLOCKSIZE)] == 1 or bd[int((p.Y+19)/BLOCKSIZE)][int((p.X-1)/BLOCKSIZE)] == 1
+
+################
+#these next 2 functions determine if the player block hits a wall
+
+def isClippedLeft(bd, p):
+	return bd[int(p.Y/BLOCKSIZE)][int((p.X)/BLOCKSIZE)] == 1 or bd[int((p.Y+19)/BLOCKSIZE)][int((p.X)/BLOCKSIZE)] == 1
+
+def isClippedRight(bd, p):
+	return bd[int(p.Y/BLOCKSIZE)][int((p.X+19)/BLOCKSIZE)] == 1 or bd[int((p.Y+19)/BLOCKSIZE)][int((p.X+19)/BLOCKSIZE)] == 1
 
 ####
 if __name__ == "__main__":
