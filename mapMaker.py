@@ -3,12 +3,20 @@ from resources import *
 import pygame
 from time import sleep
 		
-screen = pygame.display.set_mode((BLOCKSIZE*BOARD_X, BLOCKSIZE*BOARD_Y))
+while 1:
+    try:
+        boardHeight = int(input("How tall?"))
+        boardWidth = int(input("How wide?"))
+        break
+    except TypeError:
+        continue
+
+screen = pygame.display.set_mode((BLOCKSIZE*boardWidth, BLOCKSIZE*boardHeight))
 
 screen.fill(white)
 pygame.display.flip()
 
-board = [[0 for i in range(BOARD_X)] for j in range(BOARD_Y)]
+board = [[0 for i in range(boardWidth)] for j in range(boardHeight)]
 
 def blitWalls():
     for i in range(len(board)):
