@@ -32,18 +32,9 @@ for i in range(len(lines)):
 			board[i][j] = 1
 			imgPath = os.path.join('imgs', 'wall.jpg')
 			x = pygame.image.load(imgPath)
-			#x = x.convert()
 			x = pygame.transform.scale(x, (BLOCKSIZE, BLOCKSIZE))
 			screen.blit(x, (j*BLOCKSIZE, i*BLOCKSIZE+toolbarHeight))
-
-# def blitWalls():
-# 	for i in range(len(board)):
-# 		for j in range(len(board[i])):
-# 			if board[i][j] == 1:
-# 				x = pygame.image.load(os.path.join('imgs', 'wall.jpg'))
-# 				# x = pygame.Surface((BLOCKSIZE, BLOCKSIZE))
-# 				# x.fill(brown)
-# 				screen.blit(x, (j*BLOCKSIZE, i*BLOCKSIZE+toolbarHeight))
+			pygame.display.update(j*BLOCKSIZE, i*BLOCKSIZE+toolbarHeight, BLOCKSIZE, BLOCKSIZE)
 
 pygame.display.flip()
 
