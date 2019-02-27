@@ -41,10 +41,15 @@ class Wall(Block):
 class Player(Block):
 	def __init__(self, x, y):
 		Block.__init__(self, x, y)
-		self.obj.fill(red)
+		self.obj.fill(teal)
 
 		self.gVeloc = 0 #gravitational downward speed
 		self.midair = True #if midair, jump shouldnt work
+
+class Enemy(Block):
+	def init(self, x, y):
+		Block.__init__(self, x, y)
+		self.obj.fill(red)		
 
 #############################################################
 ### MAIN CLASS ###
