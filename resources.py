@@ -17,7 +17,7 @@ BLOCKSIZE = 20
 PLAYER_MVMT = 3
 GAMESPEED = 2
 
-toolbarHeight = 50
+toolbarHeight = 40
 
 
 #############################################################
