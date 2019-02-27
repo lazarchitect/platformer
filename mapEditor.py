@@ -36,14 +36,14 @@ for i in range(len(lines)):
 			x = pygame.transform.scale(x, (BLOCKSIZE, BLOCKSIZE))
 			screen.blit(x, (j*BLOCKSIZE, i*BLOCKSIZE+toolbarHeight))
 
-def blitWalls():
-	for i in range(len(board)):
-		for j in range(len(board[i])):
-			if board[i][j] == 1:
-				x = pygame.image.load(os.path.join('imgs', 'wall.jpg'))
-				# x = pygame.Surface((BLOCKSIZE, BLOCKSIZE))
-				# x.fill(brown)
-				screen.blit(x, (j*BLOCKSIZE, i*BLOCKSIZE+toolbarHeight))
+# def blitWalls():
+# 	for i in range(len(board)):
+# 		for j in range(len(board[i])):
+# 			if board[i][j] == 1:
+# 				x = pygame.image.load(os.path.join('imgs', 'wall.jpg'))
+# 				# x = pygame.Surface((BLOCKSIZE, BLOCKSIZE))
+# 				# x.fill(brown)
+# 				screen.blit(x, (j*BLOCKSIZE, i*BLOCKSIZE+toolbarHeight))
 
 pygame.display.flip()
 
@@ -81,9 +81,18 @@ while 1:
 				
 				if board[grid_y][grid_x] == status:
 					board[grid_y][grid_x] = abs(board[grid_y][grid_x] - 1) #toggler
-					screen.fill(white)
-					blitWalls()
-					pygame.display.flip()
+
+					if board[grid_y][grid_x] == 1:
+						imgPath = os.path.join('imgs', 'wall.jpg')
+						wall = pygame.image.load(imgPath)
+						wall = pygame.transform.scale(wall, (BLOCKSIZE, BLOCKSIZE))
+						screen.blit(wall, (grid_x*BLOCKSIZE, grid_y*BLOCKSIZE+toolbarHeight))
+						pygame.display.update(grid_x*BLOCKSIZE, grid_y*BLOCKSIZE+toolbarHeight, BLOCKSIZE, BLOCKSIZE)
+					else:
+						blank = pygame.Surface((BLOCKSIZE, BLOCKSIZE))
+						blank.fill(white)
+						screen.blit(blank, (grid_x*BLOCKSIZE, grid_y*BLOCKSIZE+toolbarHeight))
+						pygame.display.update(grid_x*BLOCKSIZE, grid_y*BLOCKSIZE+toolbarHeight, BLOCKSIZE, BLOCKSIZE)
 	
 	if quitCheck(): break
 
