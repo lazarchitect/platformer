@@ -17,6 +17,8 @@ BLOCKSIZE = 20
 PLAYER_MVMT = 3
 GAMESPEED = 2
 
+toolbarHeight = 50
+
 
 #############################################################
 ### HELPER METHODS ###
@@ -31,11 +33,21 @@ def quitCheck():
 			pygame.quit()
 			return True
 
-def getMouseGridLoc():
-	mouse_loc = pygame.mouse.get_pos()
-	mouse_grid_x = int(mouse_loc[0]/BLOCKSIZE)
-	mouse_grid_y = int(mouse_loc[1]/BLOCKSIZE)
+#finds the mouse position in the pygame screen
+#returns: a tuple containing the y, x coords
+def getMouseLoc():
+	coords = pygame.mouse.get_pos()
+	return (coords[1], coords[0])
+
+def getMouseGridLoc(mouse_y, mouse_x):
+	mouse_grid_x = int(mouse_x/BLOCKSIZE)
+	mouse_grid_y = int((mouse_y-toolbarHeight)/BLOCKSIZE)
 	return (mouse_grid_y, mouse_grid_x)
+
+#given the mouse location Y value,
+#determines if the user's click was in the toolbar or the grid area.
+def clickInToolbar(y):
+	return y < toolbarHeight
 
 #these next few functions are just used as aliases for blocks of code in the game file because of how ugly and unreadable they are
 
