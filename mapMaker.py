@@ -17,6 +17,14 @@ screen = pygame.display.set_mode((BLOCKSIZE*boardWidth, BLOCKSIZE*boardHeight+to
 board = [[0 for i in range(boardWidth)] for j in range(boardHeight)]
 
 screen.fill(white)
+
+#TODO #### INSTANTIATE TOOLBAR VISUALS AND BUTTONS
+# WALL BUTTON
+# BLANK BUTTON
+# PLAYER BUTTON
+# ENEMY BUTTON
+# GOAL BUTTON
+
 pygame.display.flip()
 
 while 1:
