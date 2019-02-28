@@ -7,6 +7,7 @@ import pygame
 import pygame.locals
 from time import sleep
 from resources import *
+import os
 
 #############################################################
 ### SUB-CLASSES ###
@@ -74,14 +75,23 @@ class Game:
 		boardWidth = len(lines[0].split(","))
 
 		self.screen = pygame.display.set_mode((BLOCKSIZE*boardWidth, BLOCKSIZE*boardHeight))
-		
+		self.screen.fill(self.background_color)
+			
 		self.board = [[0 for i in range(boardWidth)] for j in range(boardHeight)]
-
-		for i in range(len(lines)):
-			vals = lines[i].split(",")
-			for j in range(len(vals)):
-				if int(vals[j]) == 1:
-					self.board[i][j] = 1
+		
+		#populate board doublearray with values from csv
+		#and blit walls based on board values
+		for row in range(len(lines)):
+			vals = lines[row].split(",")
+			for col in range(len(vals)):
+				if int(vals[col]) == 1:
+					self.board[row][col] = 1
+					imgPath = os.path.join('imgs', 'wall.jpg')
+					wall = pygame.image.load(imgPath)
+					wall = pygame.transform.scale(wall, (BLOCKSIZE, BLOCKSIZE))
+					self.screen.blit(wall, (col*BLOCKSIZE, row*BLOCKSIZE))
+				#apply this code for ALL squares
+				pygame.display.update(col*BLOCKSIZE, row*BLOCKSIZE, BLOCKSIZE, BLOCKSIZE)
 
 		self.player = Player(2*BLOCKSIZE, 2*BLOCKSIZE)
 
@@ -119,8 +129,7 @@ class Game:
 				
 	"""
 	defines the gravity of the world of the game.
-	like in the real world, there is a gravitational acceleration constant.
-	its called GFORCE here.
+	like in the real world, there is a gravitational acceleration constant, called GFORCE.
 	each second that the player is in midair, their falling accelerates at that rate.
 	hitting the ground stops it.
 	no params, no returns. this function runs in the game loop.
@@ -129,14 +138,27 @@ class Game:
 		bd = self.board
 		p = self.player
 
+		#you are on or have fallen to the ground
 		if blockUnder(bd, p) and p.gVeloc >= 0:
 			p.Y = p.Y - (p.Y % BLOCKSIZE)
 			p.gVeloc = 0
-			
+
+		#you jumped up and hit the ceiling
+		elif blockAbove(bd, p):
+			p.gVeloc = GFORCE*3
+			p.Y += p.gVeloc
+
+		#soaring through the air, projectile qualities	
 		else:
 			p.gVeloc += GFORCE
 			p.gVeloc = round(p.gVeloc, 5)
-			p.Y += p.gVeloc
+
+			if wouldLand(bd, p):
+				#place the player block on the ground
+				p.Y = (p.Y - (p.Y % BLOCKSIZE)) + BLOCKSIZE
+
+			else:
+				p.Y += p.gVeloc
 
 	"""
 	function that sets the game in motion.
@@ -147,23 +169,18 @@ class Game:
 			if quitCheck():
 				return
 
-			self.screen.fill(self.background_color)
-			
+			playerRect = (self.player.X, self.player.Y, BLOCKSIZE, BLOCKSIZE)
+			self.screen.fill(white, rect=playerRect)
+			pygame.display.update(playerRect)
+
 			self.gravity()
 
-			self.playerMove()
+			self.playerMove() #user input
 
-			playerPos = (self.player.X, self.player.Y)
+			playerPos = (self.player.X, self.player.Y) #reblit player at new location
 			self.screen.blit(self.player.obj, playerPos)
-
-			for row in range(len(self.board)):
-				for col in range(len(self.board[row])):
-					if self.board[row][col] == 1:
-						w = pygame.Surface((BLOCKSIZE, BLOCKSIZE))
-						w.fill(brown)
-						self.screen.blit(w, (col*BLOCKSIZE, row*BLOCKSIZE))
+			pygame.display.update((self.player.X, self.player.Y, BLOCKSIZE, BLOCKSIZE))
 			
-			pygame.display.flip()
 			sleep(0.1 / GAMESPEED)
 
 #############################################################

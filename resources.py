@@ -52,7 +52,7 @@ def clickInToolbar(y):
 #these next few functions are just used as aliases for blocks of code in the game file because of how ugly and unreadable they are
 
 #params: board, player
-#returns if the player is blocked by a Wall under it
+#returns if the pixel underneath the player block is a wall.
 def blockUnder(bd, p):
 	return bd[int((p.Y+20)/BLOCKSIZE)][int((p.X+1)/BLOCKSIZE)] == 1 or bd[int((p.Y+20)/BLOCKSIZE)][int((p.X+19)/BLOCKSIZE)] == 1
 
@@ -72,13 +72,25 @@ def blockLeft(bd, p):
 	return bd[int(p.Y/BLOCKSIZE)][int((p.X-1)/BLOCKSIZE)] == 1 or bd[int((p.Y+19)/BLOCKSIZE)][int((p.X-1)/BLOCKSIZE)] == 1
 
 ################
-#these next 2 functions determine if the player block hits a wall
-
-def isClippedLeft(bd, p):
-	return bd[int(p.Y/BLOCKSIZE)][int((p.X)/BLOCKSIZE)] == 1 or bd[int((p.Y+19)/BLOCKSIZE)][int((p.X)/BLOCKSIZE)] == 1
+#these next functions determine if the player block hits a wall
 
 def isClippedRight(bd, p):
 	return bd[int(p.Y/BLOCKSIZE)][int((p.X+19)/BLOCKSIZE)] == 1 or bd[int((p.Y+19)/BLOCKSIZE)][int((p.X+19)/BLOCKSIZE)] == 1
+
+def isClippedLeft(bd, p):
+	return bd[int(p.Y/BLOCKSIZE)][int(p.X/BLOCKSIZE)] == 1 or bd[int((p.Y+19)/BLOCKSIZE)][int((p.X)/BLOCKSIZE)] == 1
+
+def wouldLand(bd, p):
+	next_Y = p.Y + 19 + p.gVeloc
+	return bd[int(next_Y/BLOCKSIZE)][int(p.X/BLOCKSIZE)] == 1 or bd[int(next_Y/BLOCKSIZE)][int((p.X+19)/BLOCKSIZE)] == 1
+
+#############################################################
+### CLASSES ###
+#############################################################
+
+class toolBarButton():
+	def __init__(self):
+		r = pygame.Rect()
 
 ####
 if __name__ == "__main__":
