@@ -157,6 +157,10 @@ class Game:
 				#place the player block on the ground
 				p.Y = (p.Y - (p.Y % BLOCKSIZE)) + BLOCKSIZE
 
+			elif wouldBonk(bd, p):
+				#place the player block neatly at the ceiling w/o colliding
+				p.Y = (p.Y - (p.Y % BLOCKSIZE)) + 0	
+
 			else:
 				p.Y += p.gVeloc
 

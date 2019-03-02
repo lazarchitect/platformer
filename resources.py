@@ -80,8 +80,16 @@ def isClippedRight(bd, p):
 def isClippedLeft(bd, p):
 	return bd[int(p.Y/BLOCKSIZE)][int(p.X/BLOCKSIZE)] == 1 or bd[int((p.Y+19)/BLOCKSIZE)][int((p.X)/BLOCKSIZE)] == 1
 
+#its understood that the player is falling DOWN
+#return true if the next frame would clip the bottom of the player (hence the +19) into the floor
 def wouldLand(bd, p):
-	next_Y = p.Y + 19 + p.gVeloc
+	next_Y = p.Y + 19 + p.gVeloc #where the bottom of the player block will be after 1 frame
+	return bd[int(next_Y/BLOCKSIZE)][int(p.X/BLOCKSIZE)] == 1 or bd[int(next_Y/BLOCKSIZE)][int((p.X+19)/BLOCKSIZE)] == 1
+
+#its understood that the player is flying UP
+#return true if the next frame would clip the top of the player into the ceiling
+def wouldBonk(bd, p):
+	next_Y = p.Y + 0 + p.gVeloc #where the top of the player block will be after 1 frame
 	return bd[int(next_Y/BLOCKSIZE)][int(p.X/BLOCKSIZE)] == 1 or bd[int(next_Y/BLOCKSIZE)][int((p.X+19)/BLOCKSIZE)] == 1
 
 #############################################################
