@@ -42,7 +42,7 @@ class Wall(Block):
 class Player(Block):
 	def __init__(self, x, y):
 		Block.__init__(self, x, y)
-		self.obj.fill(teal)
+		self.obj = pygame.transform.scale(pygame.image.load("imgs/player.jpg"), (BLOCKSIZE, BLOCKSIZE))
 
 		self.gVeloc = 0 #gravitational downward speed
 		self.midair = True #if midair, jump shouldnt work
@@ -81,14 +81,14 @@ class Game:
 		
 		#populate board doublearray with values from csv
 		#and blit walls based on board values
+		imgPath = os.path.join('imgs', 'wall.jpg')
+		wall = pygame.image.load(imgPath)
+		wall = pygame.transform.scale(wall, (BLOCKSIZE, BLOCKSIZE))
 		for row in range(len(lines)):
 			vals = lines[row].split(",")
 			for col in range(len(vals)):
 				if int(vals[col]) == 1:
 					self.board[row][col] = 1
-					imgPath = os.path.join('imgs', 'wall.jpg')
-					wall = pygame.image.load(imgPath)
-					wall = pygame.transform.scale(wall, (BLOCKSIZE, BLOCKSIZE))
 					self.screen.blit(wall, (col*BLOCKSIZE, row*BLOCKSIZE))
 				#apply this code for ALL squares
 				pygame.display.update(col*BLOCKSIZE, row*BLOCKSIZE, BLOCKSIZE, BLOCKSIZE)
@@ -156,6 +156,10 @@ class Game:
 			if wouldLand(bd, p):
 				#place the player block on the ground
 				p.Y = (p.Y - (p.Y % BLOCKSIZE)) + BLOCKSIZE
+
+			elif wouldBonk(bd, p):
+				#place the player block neatly at the ceiling w/o colliding
+				p.Y = (p.Y - (p.Y % BLOCKSIZE)) + 0	
 
 			else:
 				p.Y += p.gVeloc
