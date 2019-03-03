@@ -48,8 +48,6 @@ while 1:
 	"""
 
 	if pygame.mouse.get_pressed()[0] == True:
-		
-		print(getMouseLoc())
 
 		y, x = getMouseLoc()
 
