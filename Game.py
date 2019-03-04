@@ -42,9 +42,9 @@ class Wall(Block):
 class Player(Block):
 	def __init__(self, x, y):
 		Block.__init__(self, x, y)
-		playerWidth = BLOCKSIZE #easily changeable variables
-		playerHeight = BLOCKSIZE
-		self.obj = pygame.transform.scale(pygame.image.load("imgs/player.jpg"), (playerWidth, playerHeight))
+		self.width = BLOCKSIZE #easily changeable variables
+		self.height = BLOCKSIZE
+		self.obj = pygame.transform.scale(pygame.image.load("imgs/player.jpg"), (self.width, self.height))
 
 		self.gVeloc = 0 #gravitational downward speed
 		self.midair = True #if midair, jump shouldnt work
@@ -165,34 +165,3 @@ class Game:
 
 			else:
 				p.Y += p.gVeloc
-
-	"""
-	function that sets the game in motion.
-	includes the loop that pygame requires to keep the screen up.
-	"""
-	def run(self):
-		while 1: #core game loop
-			if quitCheck():
-				return
-
-			playerRect = (self.player.X, self.player.Y, BLOCKSIZE, BLOCKSIZE)
-			self.screen.fill(white, rect=playerRect)
-			pygame.display.update(playerRect)
-
-			self.gravity()
-
-			self.playerMove() #user input
-
-			playerPos = (self.player.X, self.player.Y) #reblit player at new location
-			self.screen.blit(self.player.obj, playerPos)
-			pygame.display.update((self.player.X, self.player.Y, BLOCKSIZE, BLOCKSIZE))
-			
-			sleep(0.1 / GAMESPEED)
-
-#############################################################
-### RUN BLOCK ###
-#############################################################
-
-mapFile = "maps/"+input("Which board? >>")+".csv"
-
-Game(mapFile).run()
