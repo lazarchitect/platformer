@@ -42,7 +42,9 @@ class Wall(Block):
 class Player(Block):
 	def __init__(self, x, y):
 		Block.__init__(self, x, y)
-		self.obj = pygame.transform.scale(pygame.image.load("imgs/player.jpg"), (BLOCKSIZE, BLOCKSIZE))
+		playerWidth = BLOCKSIZE #easily changeable variables
+		playerHeight = BLOCKSIZE
+		self.obj = pygame.transform.scale(pygame.image.load("imgs/player.jpg"), (playerWidth, playerHeight))
 
 		self.gVeloc = 0 #gravitational downward speed
 		self.midair = True #if midair, jump shouldnt work
