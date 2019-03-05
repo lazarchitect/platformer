@@ -17,7 +17,7 @@ while 1: #core game loop
 		break
 
 	playerRect = (g.player.X, g.player.Y, g.player.width, g.player.height)
-	g.screen.fill(white, rect=playerRect)
+	g.screen.fill(g.background_color, rect=playerRect)
 	pygame.display.update(playerRect)
 	
 	g.gravity()
