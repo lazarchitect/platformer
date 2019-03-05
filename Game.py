@@ -168,39 +168,4 @@ class Game:
 
 			#generic projecticle movement.
 			else:
-<<<<<<< HEAD:gravitygame.py
 				p.Y += p.gVeloc
-
-	"""
-	function that sets the game in motion.
-	includes the loop that pygame requires to keep the screen up.
-	"""
-	def run(self):
-		while 1: #core game loop
-			if quitCheck():
-				return
-
-			playerRect = (self.player.X, self.player.Y, BLOCKSIZE, BLOCKSIZE)
-			self.screen.fill(self.background_color, rect=playerRect)
-			pygame.display.update(playerRect)
-
-			self.gravity()
-
-			self.playerMove() #user input
-
-			playerPos = (self.player.X, self.player.Y) #reblit player at new location
-			self.screen.blit(self.player.obj, playerPos)
-			pygame.display.update((self.player.X, self.player.Y, BLOCKSIZE, BLOCKSIZE))
-			
-			sleep(0.1 / GAMESPEED)
-
-#############################################################
-### RUN BLOCK ###
-#############################################################
-
-mapFile = "maps/"+input("Which board? >>")+".csv"
-
-Game(mapFile).run()
-=======
-				p.Y += p.gVeloc
->>>>>>> 371db7a596546668186d94d40781b13a9de5c1d4:Game.py
