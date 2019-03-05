@@ -42,7 +42,9 @@ class Wall(Block):
 class Player(Block):
 	def __init__(self, x, y):
 		Block.__init__(self, x, y)
-		self.obj = pygame.transform.scale(pygame.image.load("imgs/player.jpg"), (BLOCKSIZE, BLOCKSIZE))
+		self.width = BLOCKSIZE #easily changeable variables
+		self.height = BLOCKSIZE
+		self.obj = pygame.transform.scale(pygame.image.load("imgs/player.jpg"), (self.width, self.height))
 
 		self.gVeloc = 0 #gravitational downward speed
 		self.midair = True #if midair, jump shouldnt work
@@ -166,6 +168,7 @@ class Game:
 
 			#generic projecticle movement.
 			else:
+<<<<<<< HEAD:gravitygame.py
 				p.Y += p.gVeloc
 
 	"""
@@ -198,3 +201,6 @@ class Game:
 mapFile = "maps/"+input("Which board? >>")+".csv"
 
 Game(mapFile).run()
+=======
+				p.Y += p.gVeloc
+>>>>>>> 371db7a596546668186d94d40781b13a9de5c1d4:Game.py
