@@ -14,14 +14,17 @@ import os
 #############################################################
 
 
-"""
-represents the basic building block of the game world.
-All items are made of blocks, giving them the same hitbox.
-All Blocks are 20x20 pixels.
 
-X and Y are its locations in the board.
-"""
 class Block:
+	"""
+	represents the basic building block of the game world.
+	All items are made of blocks, giving them the same hitbox.
+	All Blocks are 20x20 pixels.
+	Nothing is just a block - only subclasses get instantiated.
+	Blocks have location and size, but no meaning.
+
+	X and Y are its locations in the board. Size is defined by the BLOCKSIZE variable in resources.py.
+	"""
 	def __init__(self, x, y):
 		
 		#static fields
