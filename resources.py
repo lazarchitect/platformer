@@ -103,6 +103,9 @@ class toolBarButton():
 	def __init__(self):
 		r = pygame.Rect()
 
-####
+#############################################################
+### RUNNING CODE ###
+#############################################################
+
 if __name__ == "__main__":
 	print("this is the resources file")
