@@ -71,7 +71,7 @@ class Game:
 		lines = f.readlines()
 		f.close()
 		
-		self.background_color = white
+		self.background_color = teal
 		
 		boardHeight = len(lines)
 		boardWidth = len(lines[0].split(","))
@@ -126,8 +126,7 @@ class Game:
 		#you can only jump when on the ground
 		if pygame.key.get_pressed()[pygame.K_UP]:
 			if blockUnder(bd, p) and p.gVeloc == 0:
-				p.gVeloc -= 5
-				p.Y += p.gVeloc
+				p.gVeloc -= PLAYER_JUMP
 				
 	"""
 	defines the gravity of the world of the game.
@@ -142,26 +141,31 @@ class Game:
 
 		#you are on or have fallen to the ground
 		if blockUnder(bd, p) and p.gVeloc >= 0:
-			p.Y = p.Y - (p.Y % BLOCKSIZE)
 			p.gVeloc = 0
 
 		#you jumped up and hit the ceiling
-		elif blockAbove(bd, p):
-			p.gVeloc = GFORCE*3
-			p.Y += p.gVeloc
+		elif blockAbove(bd, p) and p.gVeloc < 0:
+			if blockUnder(bd, p): #if you are wedged in a 1-height tunnel
+				p.Y = p.Y - (p.Y % BLOCKSIZE)
+			else:
+				p.gVeloc = GFORCE*3
+				p.Y += p.gVeloc
 
 		#soaring through the air, projectile qualities	
 		else:
 			p.gVeloc += GFORCE
 			p.gVeloc = round(p.gVeloc, 5)
 
+			#are you gonna hit the ground next frame?
 			if wouldLand(bd, p):
 				#place the player block on the ground
 				p.Y = (p.Y - (p.Y % BLOCKSIZE)) + BLOCKSIZE
 
+			#alternatively, are you gonna hit the ceiling next frame?
 			elif wouldBonk(bd, p):
 				#place the player block neatly at the ceiling w/o colliding
-				p.Y = (p.Y - (p.Y % BLOCKSIZE)) + 0	
+				p.Y = (p.Y - (p.Y % BLOCKSIZE))
 
+			#generic projecticle movement.
 			else:
 				p.Y += p.gVeloc

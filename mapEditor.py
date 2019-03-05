@@ -25,16 +25,17 @@ screen.fill(white)
 #TODO: add buttons for modifying screen dimensions
 pygame.display.flip()
 
-for i in range(len(lines)):
+for i in range(boardHeight):
 	vals = lines[i].split(",")
-	for j in range(len(vals)):
-		if int(vals[j]) == 1:
+	for j in range(boardWidth):
+		if int(vals[j]) == 1 or borderWall(i, j, boardWidth, boardHeight):
 			board[i][j] = 1
 			imgPath = os.path.join('imgs', 'wall.jpg')
 			x = pygame.image.load(imgPath)
 			x = pygame.transform.scale(x, (BLOCKSIZE, BLOCKSIZE))
 			screen.blit(x, (j*BLOCKSIZE, i*BLOCKSIZE+toolbarHeight))
 			pygame.display.update(j*BLOCKSIZE, i*BLOCKSIZE+toolbarHeight, BLOCKSIZE, BLOCKSIZE)
+
 
 pygame.display.flip()
 
@@ -48,8 +49,6 @@ while 1:
 	"""
 
 	if pygame.mouse.get_pressed()[0] == True:
-		
-		print(getMouseLoc())
 
 		y, x = getMouseLoc()
 
@@ -72,7 +71,12 @@ while 1:
 				else:
 					grid_y, grid_x = getMouseGridLoc(y, x)
 					
-					#a little unclear as to why, but these quitchecks are integral. without them, the program crashes.
+					#TODO: make 'bedrock' walls unclickable
+					if borderWall(grid_y, grid_x, boardWidth, boardHeight):
+						if quitCheck(): break
+						continue
+
+					#a little unclear as to why, but these quitchecks are integral. without them, the program crashes. 
 					#if python hits an infinite loop thats too bare, it gets ahead of itself.
 					if quitCheck(): break
 					

@@ -12,9 +12,9 @@ brown =(128, 110,  98)
 white =(255, 255, 255)
 
 GFORCE = 0.2
-JUMPFORCE = 3
 BLOCKSIZE = 20
-PLAYER_MVMT = 3
+PLAYER_MVMT = 6
+PLAYER_JUMP = 6
 GAMESPEED = 2
 
 toolbarHeight = 40
@@ -48,6 +48,9 @@ def getMouseGridLoc(mouse_y, mouse_x):
 #determines if the user's click was in the toolbar or the grid area.
 def clickInToolbar(y):
 	return y < toolbarHeight
+
+def borderWall(row, col, boardWidth, boardHeight):
+	return row == 0 or col == 0 or row+1 == boardHeight or col+1 == boardWidth
 
 #these next few functions are just used as aliases for blocks of code in the game file because of how ugly and unreadable they are
 
