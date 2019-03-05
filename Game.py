@@ -126,7 +126,7 @@ class Game:
 		#you can only jump when on the ground
 		if pygame.key.get_pressed()[pygame.K_UP]:
 			if blockUnder(bd, p) and p.gVeloc == 0:
-				p.gVeloc -= 5
+				p.gVeloc -= PLAYER_JUMP
 				
 	"""
 	defines the gravity of the world of the game.
@@ -144,7 +144,7 @@ class Game:
 			p.gVeloc = 0
 
 		#you jumped up and hit the ceiling
-		elif blockAbove(bd, p):
+		elif blockAbove(bd, p) and p.gVeloc < 0:
 			if blockUnder(bd, p): #if you are wedged in a 1-height tunnel
 				p.Y = p.Y - (p.Y % BLOCKSIZE)
 			else:
